@@ -5,6 +5,7 @@ import requests
 from dotenv import load_dotenv
 from pydub import AudioSegment
 from pydub.playback import play
+from voice.voices import Voices, Voice
 
 
 
@@ -48,7 +49,7 @@ class TextToSpeach():
     def voices_request(self):
         response = requests.get(url=self.url, json=self.data, headers=self.headers)
         json_string = response.json()
-        self.download_voices(json_string=json_string)
+        self.download_voices(json_string=json_string)            
 
     def tts_request(self):
         response = requests.post(url=self.url, json=self.data, headers=self.headers, stream=True)
@@ -73,12 +74,22 @@ class TextToSpeach():
         # Ensure the directory for voice samples exists
         os.makedirs('voice/voice_samples', exist_ok=True)
 
+        voice_choice = Voices()
         # Iterate over the voice data
         for voice in data_dict['voices']:
             name = voice['name']
             voice_id = voice['voice_id']
             url = voice['preview_url']
-
+            age = voice['labels'].get('age')
+            gender = voice['labels'].get('gender')
+            use_case = voice['labels'].get('use case')
+            accent = voice['labels'].get('accent')
+            description = voice.get('description')
+            
+            name = name.replace(" ", "_")
+            
+            voice_choice.add(voice=Voice(name=name, voice_id=voice_id, accent=accent, description=description, age=age, gender=gender, use_case=use_case))
+            
             # Use requests to download the file
             response = requests.get(url)
             if response.status_code != 200:
@@ -89,6 +100,7 @@ class TextToSpeach():
                 # Create the filename
                 filename = f'voice/voice_samples/{name}_{voice_id}.mp3'
 
-                # Write the content to a file
-                with open(filename, 'wb') as f:
-                    f.write(response.content)
+                ## Write the content to a file
+                #with open(filename, 'wb') as f:
+                #    f.write(response.content)
+
