@@ -8,6 +8,8 @@ from PIL import Image
 import asyncio
 import io
 import json
+import os
+import glob
 
 class DataHandler:
     def __init__(self):
@@ -39,8 +41,7 @@ class DataHandler:
         image_data = await self.image.generate_image(prompt)
         return image_data
     
-import os
-import glob
+
 
 async def test():
     handler = DataHandler()
@@ -51,8 +52,10 @@ async def test():
     # Add the count to the image number
     image_number += png_count
     # Generate the new filename
-    filename = f"ComfyUI_{str(image_number).zfill(5)}.png"
-    print(f"Image saved to {filename}")
+    with open(f"ComfyUI_{str(image_number).zfill(5)}.png", "rb") as f:
+        image = f.read()
+    image = Image.open(io.BytesIO(image))
+    image.show()
 #    haiku = handler.generate_text("user", "write a haiku about a duck wearing a fedora")
 #    print(haiku.content)
 #    audio = handler.generate_voice(haiku.content, "tQGo4CObOu6hUEgRExhA")
