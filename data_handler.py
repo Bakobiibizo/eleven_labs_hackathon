@@ -55,7 +55,13 @@ async def test():
     # Add the count to the image number
     image_number += png_count
     # Generate the new filename
-    with open(f"ComfyUI_{str(image_number).zfill(5)}.png", "rb") as f:
+    filename = f"ComfyUI_{str(image_number).zfill(5)}.png"
+    
+    # Wait until the file is generated
+    while not os.path.isfile(filename):
+        await asyncio.sleep(1)  # wait for 1 second before checking again
+    
+    with open(filename, "rb") as f:
         image = f.read()
     image = Image.open(io.BytesIO(image))
     image.show()
