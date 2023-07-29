@@ -41,7 +41,7 @@ class DataHandler:
     
 async def test():
     handler = DataHandler()
-    image_data = await handler.generate_image("a duck wearing a red fedora")
+    image_data = await handler.generate_image("a duck wearing a fedora")
     print(image_data)
 #    haiku = handler.generate_text("user", "write a haiku about a duck wearing a fedora")
 #    print(haiku.content)
