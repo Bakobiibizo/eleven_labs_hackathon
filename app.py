@@ -1,10 +1,9 @@
-from fastapi import FastAPI, WebSocket
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.routing import APIWebSocketRoute, Mount
-from voice.eleven_labs import TextToSpeach
-from text.create_messages import Messages
-from text.openai_text import OpenAITextGeneration
-from text.message_defs import RoleOptions
+from data_handler import DataHandler, RoleOptions
+from typing import Coroutine, Any, List
+
+handler = DataHandler()
 
 app = FastAPI()
 
@@ -12,21 +11,23 @@ app.add_middleware(
     CORSMiddleware,
 )
 
+@app.get("/")
+def root():
+    return {"message": "Hello World"}
 
+@app.get("/text")
+def text(content: str, role: RoleOptions=None) -> str:
+    return handler.generate_text(role=role, content=content)
 
-tts = TextToSpeach()
-messages = Messages()
-openai_text = OpenAITextGeneration()
+@app.get("/voice")
+def voice(message: str, voice_id: str) -> str:
+    return handler.generate_voice(message=message, voice_id=voice_id)
 
-@app.websocket("/text")
-async def websocket_endpoint(websocket: WebSocket):
-    await websocket.accept()
-    while True:
-        return "hello text"
+@app.get("/image")
+async def image(prompt: str=None) -> str:
+    return await handler.generate_image(prompt=prompt)
+    
 
-
-@app.websocket("/updates")
-async def websocket_update_endpoint(websocket: WebSocket):
-    await websocket.accept()
-    while True:
-        return "hello updates"
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="http://127.0.0.1", port=5000)

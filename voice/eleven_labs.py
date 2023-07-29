@@ -2,6 +2,7 @@ import os
 import io
 import json
 import requests
+import base64
 from dotenv import load_dotenv
 from pydub import AudioSegment
 from pydub.playback import play
@@ -54,10 +55,14 @@ class TextToSpeach():
         audio_data = b""
         for chunk in response.iter_content(chunk_size=self.CHUNK_SIZE):
             audio_data += chunk
-
-        audio_file = io.BytesIO(audio_data)
-        audio = AudioSegment.from_file(audio_file, format="mp3")
-        return audio
+    
+        audio = AudioSegment.from_file(io.BytesIO(audio_data), format="mp3")
+        
+        byte_string = io.BytesIO()
+        audio.export(byte_string, format="mp3")
+        base64_string = base64.b64encode(byte_string.getvalue()).decode("utf-8")
+        
+        return base64_string
 
     def download_voices(self, json_string):
         data_dict = []
@@ -81,23 +86,16 @@ class TextToSpeach():
             
             name = name.replace(" ", "_")
             
-            voice_choice.add(voice=Voice(name=name, voice_id=voice_id, accent=accent, description=description, age=age, gender=gender, use_case=use_case))
+            voice_choice.add(voice=Voices(name=name, voice_id=voice_id, accent=accent, description=description, age=age, gender=gender, use_case=use_case))
                        
-#            response = requests.get(url)
-#            if response.status_code != 200:
-#                continue
+            response = requests.get(url)
+            if response.status_code != 200:
+                continue
 
-#            if response.status_code == 200:
-#                filename = f'voice/voice_samples/{name}_{voice_id}.mp3'
+            if response.status_code == 200:
+                filename = f'voice/voice_samples/{name}_{voice_id}.mp3'
 
-#                with open(filename, 'wb') as f:
-#                    f.write(response.content)
+                with open(filename, 'wb') as f:
+                    f.write(response.content)
 
 
-def test():
-    eleven = TextToSpeach()
-    eleven.tts("I will tell you a tale about a duck wearing a fedora", "tQGo4CObOu6hUEgRExhA")
-
-if __name__ == "__main__":
-    test()
-    
