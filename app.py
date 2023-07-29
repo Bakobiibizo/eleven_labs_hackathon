@@ -10,17 +10,26 @@ app.add_middleware(
 )
 
 from voice.eleven_labs import TextToSpeach
+from text.create_messages import Messages
+from text.openai_text import OpenAITextGeneration
+from text.message_defs import RoleOptions
 import base64
 
 tts = TextToSpeach()
+messages = Messages()
+openai_text = OpenAITextGeneration()
 
 @app.websocket("/text")
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
     while True:
         data = await websocket.receive_text()
-        # Generate audio from the received text
-        audio_file = tts.tts(data, voice_id=None)
+        # Create a message from the received text
+        message = messages.create_message(RoleOptions.USER, data)
+        # Send the message to the OpenAI API
+        response = openai_text.send_chat_complete([message.dict()])
+        # Generate audio from the response
+        audio_file = tts.tts(response.choices[0].message['content'], voice_id=None)
         # Convert the audio file to base64
         with open(audio_file, "rb") as f:
             audio_base64 = base64.b64encode(f.read())
