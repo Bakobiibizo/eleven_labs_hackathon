@@ -45,7 +45,8 @@ class DataHandler:
 
 async def test():
     handler = DataHandler()
-    image_ticket = await handler.generate_image("a duck wearing a fedora")
+    # Set a timeout for the image generation
+    image_ticket = await asyncio.wait_for(handler.generate_image("a duck wearing a fedora"), timeout=300)
     print(image_ticket)
     image_number = json.loads(image_ticket)["number"]+1
     
