@@ -51,12 +51,12 @@ async def test():
     image_id = json.loads(image_ticket)["prompt_id"]
     with open("image\image_ids.json", "r") as f:
         image_ids = json.load(f)
-        if image_id not in image_ids:
-            image_ids.append({image_id, image_number})
+        if image_id not in [item['id'] for item in image_ids]:
+            image_ids.append({'id': image_id, 'number': image_number})
             with open("image/image_ids.json", "w") as f:
-                f.write(json.dumps(image_ids))
+                json.dump(image_ids, f)
         else: 
-            image_number = image_id[image_id]
+            image_number = next((item['number'] for item in image_ids if item['id'] == image_id), None)
     print(image_number)
     
     # Count the number of PNG files in the directory
