@@ -1,6 +1,10 @@
-from voice.eleven_labs import TextToSpeach
+#api end points for /image /text /voice
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.routing import APIWebSocketRoute, Mount
 
-eleven = TextToSpeach()
+app = FastAPI()
 
-eleven.voices()
-
+app.add_middleware(
+    CORSMiddleware,
+)
