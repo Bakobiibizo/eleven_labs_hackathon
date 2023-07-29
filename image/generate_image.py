@@ -108,8 +108,9 @@ class GenerateImage:
         self.prompt["6"]["inputs"]["text"] = f"{prompt}, {self.style}"
         p = {"prompt": self.prompt}
         data = json.dumps(p).encode('utf-8')
-        req =  await request.Request("http://127.0.0.1:8188/prompt", data=data)
-        return request.urlopen(req).read()
+        async with aiohttp.ClientSession() as session:
+            async with session.post("http://127.0.0.1:8188/prompt", data=data) as resp:
+                return await resp.read()
     
     def set_style(self, style=None):
         if not style:
