@@ -30,21 +30,20 @@ class StoredMessage(BaseModel):
         }
 
 class HistoryMessage(StoredMessage):
-    message_type = MessageType.HISTORY_MESSAGE
-
+    message_type: MessageType = MessageType.HISTORY_MESSAGE
 
 class PrimerMessage(StoredMessage):
-    message_type = MessageType.PRIMER_MESSAGE
+    message_type: MessageType = MessageType.PRIMER_MESSAGE
     message_title: StrictStr
 
 class PromptMessage(StoredMessage):
-    message_type = MessageType.PROMPT_MESSAGE
+    message_type: MessageType = MessageType.PROMPT_MESSAGE
     message_title: StrictStr
 
 class PromptChainMessage(StoredMessage):
-    message_type = MessageType.PROMPT_CHAIN_MESSAGE
+    message_type: MessageType = MessageType.PROMPT_CHAIN_MESSAGE
     message_title: StrictStr
     message_description: StrictStr
 
 class PersonaMessage(StoredMessage):
-    message_type = MessageType.PERSONA_MESSAGE
+    message_type: MessageType = MessageType.PERSONA_MESSAGE
