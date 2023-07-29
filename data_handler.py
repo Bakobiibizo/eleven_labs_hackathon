@@ -39,12 +39,20 @@ class DataHandler:
         image_data = await self.image.generate_image(prompt)
         return image_data
     
+import os
+import glob
+
 async def test():
     handler = DataHandler()
     image_ticket = await handler.generate_image("a duck wearing a fedora")
     image_number = image_ticket["number"]
-    #I need to check "D:/stable-diffusion-webui/comfyui/output" and count how many png files there are and then add that number to the image number to get the correct file. then grab it in the format ComfyUI_{number preceeded by 0s until there are 5 digits}.png once the image is generated
-    print("Image saved to image.jpg")
+    # Count the number of PNG files in the directory
+    png_count = len(glob.glob("D:/stable-diffusion-webui/comfyui/output/*.png"))
+    # Add the count to the image number
+    image_number += png_count
+    # Generate the new filename
+    filename = f"ComfyUI_{str(image_number).zfill(5)}.png"
+    print(f"Image saved to {filename}")
 #    haiku = handler.generate_text("user", "write a haiku about a duck wearing a fedora")
 #    print(haiku.content)
 #    audio = handler.generate_voice(haiku.content, "tQGo4CObOu6hUEgRExhA")
