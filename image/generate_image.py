@@ -109,7 +109,7 @@ class GenerateImage:
         p = {"prompt": json.dumps(self.prompt)}
         data = json.dumps(p).encode('utf-8')
         req =  request.Request("http://127.0.0.1:8188/prompt", data=data)
-        return req.data
+        return request.urlopen(url="http://127.0.0.1:8188/", capath=None, data=data)
     
     def set_style(self, style=None):
         if not style:
