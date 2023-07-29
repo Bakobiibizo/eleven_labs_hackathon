@@ -42,7 +42,11 @@ class DataHandler:
 async def test():
     handler = DataHandler()
     image_data = await handler.generate_image("a duck wearing a fedora")
-    print(image_data)
+    # Now you can do something with the image data
+    # For example, you can save it to a file
+    with open("image.jpg", "wb") as f:
+        f.write(image_data)
+    print("Image saved to image.jpg")
 #    haiku = handler.generate_text("user", "write a haiku about a duck wearing a fedora")
 #    print(haiku.content)
 #    audio = handler.generate_voice(haiku.content, "tQGo4CObOu6hUEgRExhA")
