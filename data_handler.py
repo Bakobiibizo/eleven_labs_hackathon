@@ -46,7 +46,9 @@ class DataHandler:
 async def test():
     handler = DataHandler()
     image_ticket = await handler.generate_image("a duck wearing a fedora")
-    image_number = image_ticket["number"]
+    print(image_ticket)
+    image_number = json.loads(image_ticket)["number"]+1
+    
     # Count the number of PNG files in the directory
     png_count = len(glob.glob("D:/stable-diffusion-webui/comfyui/output/*.png"))
     # Add the count to the image number
