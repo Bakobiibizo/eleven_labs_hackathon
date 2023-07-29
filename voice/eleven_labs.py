@@ -8,7 +8,6 @@ from pydub.playback import play
 from voice.voices import Voices, Voice
 
 
-
 load_dotenv()
 
 class TextToSpeach():
@@ -43,7 +42,6 @@ class TextToSpeach():
             "similarity_boost": 0.5
           }
         }
-
         self.tts_request()
 
     def voices_request(self):
@@ -57,25 +55,21 @@ class TextToSpeach():
         for chunk in response.iter_content(chunk_size=self.CHUNK_SIZE):
             audio_data += chunk
 
-        # Convert binary data to an AudioSegment
         audio_file = io.BytesIO(audio_data)
         audio = AudioSegment.from_file(audio_file, format="mp3")
 
-        # Play the audio
-        play(audio)
+        return audio
 
     def download_voices(self, json_string):
+        data_dict = []
 
-        # Define your array of voice data
         with open("voice/voices.json", "r") as f:
             json_string = f.read()
             data_dict = json.loads(json_string)
 
-        # Ensure the directory for voice samples exists
         os.makedirs('voice/voice_samples', exist_ok=True)
 
         voice_choice = Voices()
-        # Iterate over the voice data
         for voice in data_dict['voices']:
             name = voice['name']
             voice_id = voice['voice_id']
@@ -89,18 +83,14 @@ class TextToSpeach():
             name = name.replace(" ", "_")
             
             voice_choice.add(voice=Voice(name=name, voice_id=voice_id, accent=accent, description=description, age=age, gender=gender, use_case=use_case))
-            
-            # Use requests to download the file
-            response = requests.get(url)
-            if response.status_code != 200:
-                continue
+                       
+#            response = requests.get(url)
+#            if response.status_code != 200:
+#                continue
 
-            # Check if the request was successful
-            if response.status_code == 200:
-                # Create the filename
-                filename = f'voice/voice_samples/{name}_{voice_id}.mp3'
+#            if response.status_code == 200:
+#                filename = f'voice/voice_samples/{name}_{voice_id}.mp3'
 
-                ## Write the content to a file
-                #with open(filename, 'wb') as f:
-                #    f.write(response.content)
+#                with open(filename, 'wb') as f:
+#                    f.write(response.content)
 

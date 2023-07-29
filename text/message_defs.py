@@ -48,11 +48,3 @@ class PromptChainMessage(StoredMessage):
 
 class PersonaMessage(StoredMessage):
     message_type = MessageType.PERSONA_MESSAGE
-    
-
-class PromptMessageConfig(BaseModel):
-    allow_population_by_field_name = True
-    arbitrary_types_allowed = True
-    json_encoders = {
-        MessageType: lambda v: v.value,
-    }
