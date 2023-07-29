@@ -5,7 +5,6 @@ import requests
 from dotenv import load_dotenv
 from pydub import AudioSegment
 from pydub.playback import play
-from voice.voices import Voices, Voice
 
 
 load_dotenv()
@@ -57,7 +56,6 @@ class TextToSpeach():
 
         audio_file = io.BytesIO(audio_data)
         audio = AudioSegment.from_file(audio_file, format="mp3")
-
         return audio
 
     def download_voices(self, json_string):
@@ -94,3 +92,11 @@ class TextToSpeach():
 #                with open(filename, 'wb') as f:
 #                    f.write(response.content)
 
+
+def test():
+    eleven = TextToSpeach()
+    eleven.tts("I will tell you a tale about a duck wearing a fedora", "tQGo4CObOu6hUEgRExhA")
+
+if __name__ == "__main__":
+    test()
+    

@@ -23,7 +23,7 @@ class StoredMessage(BaseModel):
     message_type: MessageType
 
     class Config:
-        allow_population_by_field_name = True
+        population_by_name = True
         arbitrary_types_allowed = True
         json_encoders = {
             MessageType: lambda v: v.value,
