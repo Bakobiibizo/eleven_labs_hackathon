@@ -1,5 +1,7 @@
 import json
 from urllib import request
+import asyncio
+import aiohttp
 
 class GenerateImage:
     def __init__(self):
@@ -91,6 +93,8 @@ class GenerateImage:
     }
 }
 """
+        self.style = self.set_style()
+        
     def set_style(self, style=None):
         if not style:
             style = """
@@ -99,18 +103,13 @@ class GenerateImage:
         self.style = style
         return style
           
-    async def queue_prompt(self, prompt):
-        p = {"prompt": prompt}
+    async def generate_image(self, prompt):
+        self.prompt = json.loads(self.prompt_text)
+        self.prompt["6"]["inputs"]["text"] = f"{prompt}, {self.style}"
+        p = {"prompt": self.prompt}
         data = json.dumps(p).encode('utf-8')
-        req = await request.Request("http://127.0.0.1:8188/prompt", data=data)
-        request.urlopen(req)
-        return request.urlopen(req)
-          
-    def get_prompt(self, prompt):
-        with open(self.prompt_text, 'r') as f:
-            self.prompt = json.load(f)
-        prompt["6"]["inputs"]["text"] = prompt + self.style
-        return self.prompt
+        req =  await request.Request("http://127.0.0.1:8188/prompt", data=data)
+        return request.urlopen(req).read()
     
     def set_style(self, style=None):
         if not style:
@@ -119,11 +118,4 @@ class GenerateImage:
             """
         self.style = style
         return style
-      
-    async def queue_prompt(self, prompt):
-        p = {"prompt": prompt}
-        data = json.dumps(p).encode('utf-8')
-        req = await request.Request("http://127.0.0.1:8188/prompt", data=data)
-        request.urlopen(req)
-        return request.urlopen(req)
       

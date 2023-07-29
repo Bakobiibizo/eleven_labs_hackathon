@@ -5,6 +5,7 @@ from image.generate_image import GenerateImage
 from typing import List, Dict
 from pydub.playback import play
 from PIL import Image
+import asyncio
 import io
 import json
 
@@ -34,20 +35,18 @@ class DataHandler:
         audio_file = self.voice.tts(text=message, voice_id=voice_id)
         return audio_file
     
-    def generate_image(self, prompt: str) -> str:
-        prompt = self.image.get_prompt(prompt)
-        image = self.image.queue_prompt(prompt)
-        return image
+    async def generate_image(self, prompt: str) -> str:
+        image_data = await self.image.generate_image(prompt)
+        return image_data
     
-def test():
+async def test():
     handler = DataHandler()
-    #image_data = await handler.generate_image("a duck wearing a fedora")
-    #image = Image.open(io.BytesIO(image_data))
-    #image.show()
-    haiku = handler.generate_text("user", "write a haiku about a duck wearing a fedora")
-    print(haiku.content)
-    audio = handler.generate_voice(haiku.content, "tQGo4CObOu6hUEgRExhA")
-    play(audio)
+    image_data = await handler.generate_image("a duck wearing a red fedora")
+    print(image_data)
+#    haiku = handler.generate_text("user", "write a haiku about a duck wearing a fedora")
+#    print(haiku.content)
+#    audio = handler.generate_voice(haiku.content, "tQGo4CObOu6hUEgRExhA")
+#    play(audio)
 
 if __name__ == "__main__":
-    test()
+    asyncio.run(test())

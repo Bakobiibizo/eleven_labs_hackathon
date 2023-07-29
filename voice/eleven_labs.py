@@ -5,6 +5,7 @@ import requests
 from dotenv import load_dotenv
 from pydub import AudioSegment
 from pydub.playback import play
+from voice.voices import Voices
 
 
 load_dotenv()
