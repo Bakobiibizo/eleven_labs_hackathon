@@ -41,7 +41,7 @@ class TextToSpeach():
             "similarity_boost": 0.5
           }
         }
-        self.tts_request()
+        return self.tts_request()
 
     def voices_request(self):
         response = requests.get(url=self.url, json=self.data, headers=self.headers)
