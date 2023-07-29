@@ -37,8 +37,8 @@ class DataHandler:
         audio_file = self.voice.tts(text=message, voice_id=voice_id)
         return audio_file
     
-    async def generate_image(self, prompt: str) -> str:
-        image_data = await self.image.generate_image(prompt)
+    def generate_image(self, prompt: str) -> str:
+        image_data = self.image.generate_image(prompt)
         return image_data
     
 
@@ -47,18 +47,19 @@ async def test():
     handler = DataHandler()
     # Set a timeout for the image generation
     image_ticket = handler.generate_image("a duck wearing a fedora")
-    image_number = await asyncio.wait_for(json.loads(image_ticket)["number"]+1, timeout=300)
-    print(image_ticket)
+    image_number = json.loads(image_ticket)
+    image = await asyncio.wait_for(image_number, timeout=300)
+    print(image)
     
     # Count the number of PNG files in the directory
     png_count = len(glob.glob("D:/stable-diffusion-webui/comfyui/output/*.png"))
     # Add the count to the image number
-    image_number += png_count
+    image = png_count
     # Generate the new filename
-    filename = f"ComfyUI_{str(image_number).zfill(5)}.png"
+    filename = f"ComfyUI_{str(image).zfill(5)}.png"
     
     # Wait until the file is generated
-    while not os.path.isfile(filename):
+    with not os.path.isfile(filename):
         await asyncio.sleep(1)  # wait for 1 second before checking again
     
     with open(filename, "rb") as f:
