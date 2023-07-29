@@ -46,25 +46,25 @@ class DataHandler:
 async def test():
     handler = DataHandler()
     # Set a timeout for the image generation
-    image_ticket = handler.generate_image("a duck wearing a fedora")
-    image_number = json.loads(image_ticket)["number"] +1
+    image_ticket = handler.generate_image("a duck wearing a red fedora")
+    image_number = json.loads(image_ticket)["number"]+1
     image_id = json.loads(image_ticket)["prompt_id"]
     with open("image\image_ids.json", "r") as f:
         image_ids = json.load(f)
-        if image_id not in [item['id'] for item in image_ids]:
-            image_ids.append({'id': image_id, 'number': image_number})
+        if image_id not in [item['image_id'] for item in image_ids]:
+            image_ids.append({'image_id': image_id, 'image_number': image_number})
             with open("image/image_ids.json", "w") as f:
                 json.dump(image_ids, f)
         else: 
-            image_number = next((item['number'] for item in image_ids if item['id'] == image_id), None)
-    print(image_number)
-    
+            image_number = next((item['image_number'] for item in image_ids if item['image_id'] == image_id), None)
     # Count the number of PNG files in the directory
     png_count = len(glob.glob("D:/stable-diffusion-webui/comfyui/output/*.png"))
     # Add the count to the image number
     image_number += png_count
+    print(image_number)
     # Generate the new filename
-    filename = f"ComfyUI_{str(image_number).zfill(5)}.png"
+    filename = f"D:/stable-diffusion-webui/ComfyUI/output/ComfyUI_{str(image_number).zfill(5)}_.png"
+    print(filename)
     
     # Wait until the file is generated
     while not os.path.isfile(filename):
