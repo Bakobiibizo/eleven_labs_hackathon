@@ -30,4 +30,4 @@ async def image(prompt: str=None) -> str:
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="http://127.0.0.1", port=5000)
+    uvicorn.run(app, host="127.0.0.1", port=5000)
