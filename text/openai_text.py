@@ -6,7 +6,6 @@ load_dotenv()
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
-
 class OpenAITextGeneration:
     def __init__(self):
         pass

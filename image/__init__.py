@@ -1,3 +1,3 @@
-from image.image_prompt import ImagePrompt
+from image import generate_image
 
-__all__ = ["ImagePrompt"]
+__all__ = ["generate_image"]
