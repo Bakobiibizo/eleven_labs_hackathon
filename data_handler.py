@@ -41,11 +41,9 @@ class DataHandler:
     
 async def test():
     handler = DataHandler()
-    image_data = await handler.generate_image("a duck wearing a fedora")
-    # Now you can do something with the image data
-    # For example, you can save it to a file
-    with open("image.jpg", "wb") as f:
-        f.write(image_data)
+    image_ticket = await handler.generate_image("a duck wearing a fedora")
+    image_number = image_ticket["number"]
+    #I need to check "D:/stable-diffusion-webui/comfyui/output" and count how many png files there are and then add that number to the image number to get the correct file. then grab it in the format ComfyUI_{number preceeded by 0s until there are 5 digits}.png once the image is generated
     print("Image saved to image.jpg")
 #    haiku = handler.generate_text("user", "write a haiku about a duck wearing a fedora")
 #    print(haiku.content)
