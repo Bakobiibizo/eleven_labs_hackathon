@@ -48,18 +48,17 @@ async def test():
     # Set a timeout for the image generation
     image_ticket = handler.generate_image("a duck wearing a fedora")
     image_number = json.loads(image_ticket)
-    image = await asyncio.wait_for(image_number, timeout=300)
-    print(image)
+    print(image_number)
     
     # Count the number of PNG files in the directory
     png_count = len(glob.glob("D:/stable-diffusion-webui/comfyui/output/*.png"))
     # Add the count to the image number
-    image = png_count
+    image_number += png_count
     # Generate the new filename
-    filename = f"ComfyUI_{str(image).zfill(5)}.png"
+    filename = f"ComfyUI_{str(image_number).zfill(5)}.png"
     
     # Wait until the file is generated
-    with not os.path.isfile(filename):
+    while not os.path.isfile(filename):
         await asyncio.sleep(1)  # wait for 1 second before checking again
     
     with open(filename, "rb") as f:
