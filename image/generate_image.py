@@ -106,11 +106,11 @@ class GenerateImage:
     def generate_image(self, prompt):
         self.prompt = json.loads(self.prompt_text)
         self.prompt["6"]["inputs"]["text"] = f"{prompt}, {self.style}"
-        p = {"prompt": json.dumps(self.prompt)}
+        p = {"prompt": self.prompt}
         data = json.dumps(p).encode('utf-8')
         req =  request.Request("http://127.0.0.1:8188/prompt", data=data)
-        return request.urlopen(url="http://127.0.0.1:8188/", capath=None, data=data)
-    
+        resp = request.urlopen(req)
+        return resp.read()
     def set_style(self, style=None):
         if not style:
             style = """

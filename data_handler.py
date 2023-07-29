@@ -47,8 +47,16 @@ async def test():
     handler = DataHandler()
     # Set a timeout for the image generation
     image_ticket = handler.generate_image("a duck wearing a fedora")
-    print(image_ticket)
-    image_number = image_ticket["number"]+1
+    image_number = json.loads(image_ticket)["number"] +1
+    image_id = json.loads(image_ticket)["prompt_id"]
+    with open("image\image_ids.json", "r") as f:
+        image_ids = json.load(f)
+        if image_id not in image_ids:
+            image_ids.append({image_id, image_number})
+            with open("image/image_ids.json", "w") as f:
+                f.write(json.dumps(image_ids))
+        else: 
+            image_number = image_id[image_id]
     print(image_number)
     
     # Count the number of PNG files in the directory
