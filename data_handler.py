@@ -3,25 +3,19 @@ from text.create_messages import Messages
 from voice.eleven_labs import TextToSpeach
 from image.generate_image import GenerateImage
 from text.context_window import ContextWindow
-from text.narrator import Narrator
-from tool_handler import ToolHandler
 from fastapi import HTTPException
 import asyncio
-
 
 class DataHandler:
     def __init__(self):
         self.context = ContextWindow(window_size=30)
-        self.tools = Tools()
         self.text = OpenAITextGeneration()
         self.voice = TextToSpeach()
         self.image = GenerateImage()
         self.messages = Messages()
-        self.narrator = Narrator()
-        self.tools.load_tools()
-        
+                
     def handle_narration(self, prompt: str) -> str:
-        
+        message = self.messages.create_message(role="system", content=prompt)
         
         
     def handle_chat(self, content:str, role:str=None) -> str:
@@ -64,7 +58,5 @@ class DataHandler:
         return asyncio.run(self.image.generate_image(prompt=prompt))
     
         
-
-
 if __name__ == "__main__":
     asyncio.run(DataHandler())

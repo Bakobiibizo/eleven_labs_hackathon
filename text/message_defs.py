@@ -15,7 +15,6 @@ class MessageType(str, Enum):
     MESSAGE = "message"
     HISTORY_MESSAGE = "history_message"
     PRIMER_MESSAGE = "primer_message"
-    PROMPT_MESSAGE = "prompt_message"
     PROMPT_CHAIN_MESSAGE = "chain_message"
     PERSONA_MESSAGE = "persona_message"
 
@@ -38,7 +37,7 @@ class PrimerMessage(StoredMessage):
     message_title: StrictStr
 
 class PromptMessage(StoredMessage):
-    message_type: MessageType = MessageType.PROMPT_MESSAGE
+    message_type: MessageType = str
     message_title: StrictStr
 
 class PromptChainMessage(StoredMessage):
