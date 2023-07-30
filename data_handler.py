@@ -26,8 +26,7 @@ class DataHandler:
                 detail="Content is required. Content is a string of text meant to be sent to the chat bot api."
                 )
         messages = self.messages.create_message(role=role, content=content)
-        json_message = [self.messages.message_to_json(messages)]
-        messages = json_message
+        messages = [self.messages.create_message(role=role, content=content)]
         return self.text.send_chat_complete(messages=messages)
 
     def handle_voice(self, message: str, voice_id: str) -> str:
