@@ -1,7 +1,12 @@
+import os
+import io
 import json
-from urllib import request
+import glob
 import asyncio
-import aiohttp
+from PIL import Image
+from urllib import request
+
+
 
 class GenerateImage:
     def __init__(self):
@@ -103,14 +108,45 @@ class GenerateImage:
         self.style = style
         return style
           
-    def generate_image(self, prompt):
+    async def generate_image(self, prompt):
         self.prompt = json.loads(self.prompt_text)
         self.prompt["6"]["inputs"]["text"] = f"{prompt}, {self.style}"
+        
         p = {"prompt": self.prompt}
         data = json.dumps(p).encode('utf-8')
+        
         req =  request.Request("http://127.0.0.1:8188/prompt", data=data)
-        resp = request.urlopen(req)
-        return resp.read()
+        
+        image_data = json.loads(request.urlopen(req).read())
+        image_number = image_data["number"]+1
+        image_id = image_data["prompt_id"]
+        
+        with open("image\image_ids.json", "r") as f:
+            image_ids = json.load(f)
+            if image_id not in [item['image_id'] for item in image_ids]:
+                image_ids.append({'image_id': image_id, 'image_number': image_number})
+                with open("image/image_ids.json", "w") as f:
+                    json.dump(image_ids, f)
+            else: 
+                image_number = next((item['image_number'] for item in image_ids if item['image_id'] == image_id), None)
+
+        png_count = len(glob.glob("D:/stable-diffusion-webui/comfyui/output/*.png"))
+
+        image_number += png_count
+        print(image_number)
+        
+        filename = f"D:/stable-diffusion-webui/ComfyUI/output/ComfyUI_{str(image_number).zfill(5)}_.png"
+        print(filename)
+    
+        while not os.path.isfile(filename):
+            await asyncio.sleep(1)  
+
+        with open(filename, "rb") as f:
+            image = f.read()
+        image = Image.open(io.BytesIO(image))
+        image.show()
+        return image
+    
     def set_style(self, style=None):
         if not style:
             style = """

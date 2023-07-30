@@ -5,9 +5,7 @@ import requests
 import base64
 from dotenv import load_dotenv
 from pydub import AudioSegment
-from pydub.playback import play
 from voice.voices import Voices
-
 
 load_dotenv()
 
@@ -57,6 +55,9 @@ class TextToSpeach():
             audio_data += chunk
     
         audio = AudioSegment.from_file(io.BytesIO(audio_data), format="mp3")
+        
+        with open("output/voice.mp3", "wb") as f:
+            f.write(audio_data)
         
         byte_string = io.BytesIO()
         audio.export(byte_string, format="mp3")

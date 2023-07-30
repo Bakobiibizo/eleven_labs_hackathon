@@ -1,4 +1,5 @@
 from pydantic import BaseModel, StrictStr
+from dataclasses import dataclass
 from enum import Enum
 
 class RoleOptions(str, Enum):
@@ -7,8 +8,8 @@ class RoleOptions(str, Enum):
     SYSTEM = "system"
 
 class Message(BaseModel):
-    role: RoleOptions
-    content: StrictStr
+    role: str
+    content: str
 
 class MessageType(str, Enum):
     MESSAGE = "message"

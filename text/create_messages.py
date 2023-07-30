@@ -1,6 +1,5 @@
 from text.message_defs import (
-    Message, 
-    RoleOptions
+    Message
 )
 import json
 from json.encoder import JSONEncoder
@@ -8,12 +7,13 @@ from json.encoder import JSONEncoder
 
 encoder = JSONEncoder(sort_keys=True,ensure_ascii=True)
 
+
 class Messages:
     def __init__(self):
         pass
     
-    def create_message(self, role: RoleOptions, content: str) -> Message:
-        return Message(role=role, content=content)
+    def create_message(self, role: str, content: str) -> Message:
+        return json.Message(role=role, content=content)
 
     def prompt_message_to_json(self, prompts: list) -> str:
         return json.dumps(prompts)

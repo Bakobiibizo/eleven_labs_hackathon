@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from data_handler import DataHandler, RoleOptions
-from typing import Coroutine, Any, List
 
 handler = DataHandler()
 
@@ -15,13 +14,17 @@ app.add_middleware(
 def root():
     return {"message": "Hello World"}
 
+@app.post("/chat")
+def chat(message: str, role: RoleOptions=None) -> str:
+    return handler.handle_chat(message=message, role=role)
+
 @app.get("/text")
 def text(content: str, role: RoleOptions=None) -> str:
-    return handler.generate_text(role=role, content=content)
+    return handler.handle_chat(role=role, content=content)
 
 @app.get("/voice")
 def voice(message: str, voice_id: str) -> str:
-    return handler.generate_voice(message=message, voice_id=voice_id)
+    return handler.handle_voice(message=message, voice_id=voice_id)
 
 @app.get("/image")
 async def image(prompt: str=None) -> str:

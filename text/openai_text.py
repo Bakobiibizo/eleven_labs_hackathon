@@ -1,6 +1,7 @@
 import os
 import openai
 from dotenv import load_dotenv
+from typing import List
 
 load_dotenv()
 
@@ -16,6 +17,7 @@ class OpenAITextGeneration:
             response = openai.ChatCompletion.create(
                 model="gpt-3.5-turbo", messages=messages
             )
+            print(response)
             return response
         except ConnectionError as e:
             print(f"There was an error connecting to OpenAI: {e}")
