@@ -3,7 +3,6 @@ from text.create_messages import Messages
 from voice.eleven_labs import TextToSpeach
 from image.generate_image import GenerateImage
 from fastapi import HTTPException
-from typing import List
 import asyncio
 
 
@@ -26,8 +25,8 @@ class DataHandler:
                 detail="Content is required. Content is a string of text meant to be sent to the chat bot api."
                 )
         messages = self.messages.create_message(role=role, content=content)
-        messages = [self.messages.create_message(role=role, content=content)]
-        return self.text.send_chat_complete(messages=messages)
+        messages = [messages.__dict__]
+        return self.text.send_chat_complete(messages=messages).choices[0].message.content
 
     def handle_voice(self, message: str, voice_id: str) -> str:
         if not message:

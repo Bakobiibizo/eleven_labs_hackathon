@@ -145,7 +145,7 @@ class GenerateImage:
             image = f.read()
         image = Image.open(io.BytesIO(image))
         image.show()
-        return image
+        return json.dumps(image)
     
     def set_style(self, style=None):
         if not style:
