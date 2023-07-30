@@ -52,8 +52,8 @@ class Messages:
     def json_to_history_message(self, json_str: str) -> list:
         return json.loads(json_str)
 
-    def message_to_json(self, message: dict) -> str:
-        return json.dumps(message)
+    def message_to_json(self, message: Message) -> str:
+        return json.dumps(message.dict())
 
     def json_to_message(self, json_str: str) -> dict:
         return json.loads(json_str)
