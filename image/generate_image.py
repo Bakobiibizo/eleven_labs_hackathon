@@ -1,9 +1,7 @@
 import os
-import io
 import json
 import glob
 import asyncio
-from PIL import Image
 from urllib import request
 import base64
 
@@ -109,7 +107,7 @@ class GenerateImage:
         self.style = style
         return style
           
-    import base64
+
     async def generate_image(self, prompt):
         self.prompt = json.loads(self.prompt_text)
         self.prompt["6"]["inputs"]["text"] = f"{prompt}, {self.style}"

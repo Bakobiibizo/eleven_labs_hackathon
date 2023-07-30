@@ -2,12 +2,14 @@ from text.openai_text import OpenAITextGeneration
 from text.create_messages import Messages
 from voice.eleven_labs import TextToSpeach
 from image.generate_image import GenerateImage
+from text.context_window import ContextWindow
 from fastapi import HTTPException
 import asyncio
 
 
 class DataHandler:
     def __init__(self):
+        self.context = ContextWindow(window_size=30)
         self.text = OpenAITextGeneration()
         self.voice = TextToSpeach()
         self.image = GenerateImage()
@@ -24,9 +26,13 @@ class DataHandler:
                 status_code=400, 
                 detail="Content is required. Content is a string of text meant to be sent to the chat bot api."
                 )
-        messages = self.messages.create_message(role=role, content=content)
-        messages = [messages.__dict__]
-        return self.text.send_chat_complete(messages=messages).choices[0].message.content
+        message = self.message.create_message(role=role, content=content)
+        self.context.add_message(message=message)
+        messages = self.context.get_context()
+        assistant_message = self.text.send_chat_complete(messages=messages).choices[0].message
+        self.context.add_message(message=assistant_message)
+        return assistant_message.content
+        
 
     def handle_voice(self, message: str, voice_id: str) -> str:
         if not message:

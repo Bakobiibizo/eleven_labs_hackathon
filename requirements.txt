@@ -2,8 +2,11 @@ openai
 elevenlabs
 fastapi
 uvicorn
+watchfiles
 pydub
 python-dotenv
 pydantic
 aiohttp
 asyncio
+pillow
+ffmpeg-python

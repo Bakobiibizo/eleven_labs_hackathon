@@ -1,6 +1,9 @@
+import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from data_handler import DataHandler
+from typing import Optional
+
 
 handler = DataHandler()
 
@@ -15,11 +18,11 @@ def root():
     return {"message": "Hello World"}
 
 @app.post("/chat")
-def chat(message: str, role: str) -> str:
-    return handler.handle_chat(message=message, role=role)
+def chat(content: str, role: Optional[str]) -> str:
+    return handler.handle_chat(content=content, role=role)
 
 @app.get("/text")
-def text(content: str, role: str) -> str:
+def text(content: str, role: Optional[str]) -> str:
     return handler.handle_chat(role=role, content=content)
 
 @app.get("/voice")
@@ -32,5 +35,4 @@ def image(prompt: str) -> str:
     
 
 if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="127.0.0.1", port=5000)
+    uvicorn.run(app, host="127.0.0.1", port=8080, log_level="info")

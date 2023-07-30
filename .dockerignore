@@ -154,6 +154,6 @@ cython_debug/
 
 *.mp3
 
-
 .aider*
 .aider.chat.history.md
+testing.py
