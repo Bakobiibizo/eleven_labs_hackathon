@@ -108,6 +108,7 @@ class GenerateImage:
         self.style = style
         return style
           
+    import base64
     async def generate_image(self, prompt):
         self.prompt = json.loads(self.prompt_text)
         self.prompt["6"]["inputs"]["text"] = f"{prompt}, {self.style}"
@@ -142,10 +143,12 @@ class GenerateImage:
             await asyncio.sleep(1)  
 
         with open(filename, "rb") as f:
-            image = f.read()
-        image = Image.open(io.BytesIO(image))
-        image.show()
-        return json.dumps(image)
+            image_data = f.read()
+        # Encode the binary data to base64
+        encoded_image_data = base64.b64encode(image_data)
+        # Convert the base64 bytes to string
+        serialized_image = encoded_image_data.decode('utf-8')
+        return serialized_image
     
     def set_style(self, style=None):
         if not style:
