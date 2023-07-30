@@ -5,6 +5,7 @@ import glob
 import asyncio
 from PIL import Image
 from urllib import request
+import base64
 
 
 

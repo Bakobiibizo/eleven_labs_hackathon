@@ -1,0 +1,9 @@
+openai
+elevenlabs
+fastapi
+uvicorn
+pydub
+python-dotenv
+pydantic
+aiohttp
+asyncio
