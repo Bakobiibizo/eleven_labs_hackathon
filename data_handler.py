@@ -3,6 +3,8 @@ from text.create_messages import Messages
 from voice.eleven_labs import TextToSpeach
 from image.generate_image import GenerateImage
 from text.context_window import ContextWindow
+from text.narrator import Narrator
+from tool_handler import ToolHandler
 from fastapi import HTTPException
 import asyncio
 
@@ -10,10 +12,17 @@ import asyncio
 class DataHandler:
     def __init__(self):
         self.context = ContextWindow(window_size=30)
+        self.tools = Tools()
         self.text = OpenAITextGeneration()
         self.voice = TextToSpeach()
         self.image = GenerateImage()
         self.messages = Messages()
+        self.narrator = Narrator()
+        self.tools.load_tools()
+        
+    def handle_narration(self, prompt: str) -> str:
+        
+        
         
     def handle_chat(self, content:str, role:str=None) -> str:
         role = role
@@ -32,7 +41,6 @@ class DataHandler:
         assistant_message = self.text.send_chat_complete(messages=messages).choices[0].message
         self.context.add_message(message=assistant_message)
         return assistant_message.content
-        
 
     def handle_voice(self, message: str, voice_id: str) -> str:
         if not message:

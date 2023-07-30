@@ -6,6 +6,7 @@ from voice.eleven_labs import TextToSpeach
 from text.openai_text import OpenAITextGeneration
 from image.generate_image import GenerateImage
 from data_handler import DataHandler
+from 
 handler = DataHandler()
 voice = TextToSpeach()
 image = GenerateImage()
