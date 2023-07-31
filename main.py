@@ -1,22 +1,15 @@
 import uvicorn
-from fastapi import FastAPI, requests
-from fastapi.middleware.cors import CORSMiddleware
+
 from data_handler import DataHandler
 from typing import Optional
+from flask import Flask, Request
+from flask_cors import CORS
 
+app = Flask(__name__)
+
+CORS(app)
 
 handler = DataHandler()
-
-app = FastAPI()
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["173.3.221.137"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
 
 @app.get("/")
 def root():
@@ -37,11 +30,6 @@ def voice(message: str, voice_id: str) -> str:
 @app.get("/image")
 def image(prompt: str) -> str:
     return handler.handle_image(prompt=prompt)
-
-@app.get("/update")
-def update(mode, item)-> str:
-    response = requests.get(f"http://127.0.0.1:8000/{mode}", json={"mode": mode, "item": item})
-    return response.json()  
 
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8080, log_level="info")

@@ -3,7 +3,8 @@ from text.create_messages import Messages
 from voice.eleven_labs import TextToSpeach
 from image.generate_image import GenerateImage
 from text.context_window import ContextWindow
-from fastapi import HTTPException
+from tool_handler import ToolHandler
+from fastapi import HTTPException, requests
 import asyncio
 
 class DataHandler:
@@ -12,7 +13,8 @@ class DataHandler:
         self.text = OpenAITextGeneration()
         self.voice = TextToSpeach()
         self.image = GenerateImage()
-        self.messages = Messages()        
+        self.messages = Messages()  
+        self.tools = ToolHandler("Narrator")      
         
     def handle_chat(self, content:str, role:str=None) -> str:
         role = role
@@ -34,6 +36,7 @@ class DataHandler:
                 "role": message.role
             })
         assistant_message = self.text.send_chat_complete(messages=messages).choices[0].message
+        assistant_message = self.update_image(assistant_message)
         self.context.add_message(message=assistant_message)
         return assistant_message.content
 
@@ -57,6 +60,23 @@ class DataHandler:
                 detail="Prompt is required. Prompt is a string of text meant to be sent to the image api."
             )
         return asyncio.run(self.image.generate_image(prompt=prompt))
+    
+    def update_image(self, prompt: str) -> str: 
+        if not prompt:
+            raise HTTPException(
+                status_code=400,
+                detail="Prompt is required. Prompt is a string of text meant to be sent to the image api."
+            )
+        for narrator in self.tools.command_executor.command_dispatcher.values():
+            message = ""
+            if narrator.name == "Narrator":
+                message = self.tools.command_executor.execute_command(narrator.tool["Narrator"](prompt=prompt))
+        image = asyncio.run(self.image.generate_image(prompt=prompt))
+        body = {
+            "imageString": image,
+            "overlayText": message
+        }
+        return body
     
         
 if __name__ == "__main__":

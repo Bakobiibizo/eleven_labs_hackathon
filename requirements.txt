@@ -10,3 +10,5 @@ aiohttp
 asyncio
 pillow
 ffmpeg-python
+urllib
+glob
