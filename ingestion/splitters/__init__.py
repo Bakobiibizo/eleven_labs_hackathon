@@ -1,3 +1,3 @@
-from ingestion.splitters.splitter_selector import  splitter_selector
+from ingestion.splitters import splitter_selector, text_splitters
 
-__all__ = ["splitter_selector"]
+__all__ = ["splitter_selector", "text_splitters"]

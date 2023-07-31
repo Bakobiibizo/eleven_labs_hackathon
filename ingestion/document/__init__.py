@@ -1,5 +1,3 @@
-from ingestion.document.documents import Document
-from ingestion.document.serializable import Serializable
-from ingestion.document.detect_encoding import detect_file_encodings
+from ingestion.document import detect_encoding, documents, serializable
 
-__all__ = ["detect_file_encodings", "Document", "Serializable"]
+__all__ = ["detect_encoding", "documents", "serializable"]

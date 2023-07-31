@@ -1,3 +1,4 @@
-from ingestion.loaders.loader_selector import loader_selector
+from ingestion.loaders import loader_selector, pypdf_loader, web_scraper
 
-__all__ = ["loader_selector"]
+__all__ = ["loader_selector", "pypdf_loader", "web_scraper"]
+

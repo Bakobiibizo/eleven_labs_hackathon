@@ -1,7 +1,7 @@
-from ingestion.vectorstore.vectorstore import Vectorstores
 from ingestion.splitters.splitter_selector import SplitterSelector
-from ingestion.loaders.loader_selector import LoaderSelector
 from ingestion.embeddings.embeddings_caller import EmbeddingCaller
+from ingestion.loaders.loader_selector import LoaderSelector
+from ingestion.vectorstore.vectorstore import Vectorstores
 
 class IngestionHandler(Vectorstores):
     def __init__(self):
@@ -9,8 +9,6 @@ class IngestionHandler(Vectorstores):
         self.splitters = SplitterSelector(splitter=None)
         self.loaders = LoaderSelector(loader_name=None)
         self.emeddings = EmbeddingCaller(embedding_type=None, model_name=None)
-
-
 
 def test():
     document_path = "D:/papers/orca.pdf"
