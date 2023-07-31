@@ -30,7 +30,7 @@ class GenerateImage:
     image_count = 0  # Class variable to keep track of the number of images generated
 
     def generate_image(self, prompt):
-        print(prompt)
+        print(f"Prompt before JSON loading: {prompt}")
         if not prompt:
             raise ValueError("prompt is required")
         self.prompt = json.loads(prompt)
