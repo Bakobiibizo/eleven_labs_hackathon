@@ -9,108 +9,25 @@ import base64
 
 class GenerateImage:
     def __init__(self):
-        self.prompt_text = """
-{
-    "3": {
-        "class_type": "KSampler",
-        "inputs": {
-            "cfg": 8,
-            "denoise": 1,
-            "latent_image": [
-                "5",
-                0
-            ],
-            "model": [
-                "4",
-                0
-            ],
-            "negative": [
-                "7",
-                0
-            ],
-            "positive": [
-                "6",
-                0
-            ],
-            "sampler_name": "euler",
-            "scheduler": "normal",
-            "seed": 8566257,
-            "steps": 20
-        }
-    },
-    "4": {
-        "class_type": "CheckpointLoaderSimple",
-        "inputs": {
-            "ckpt_name": "v1-5-pruned-emaonly.ckpt"
-        }
-    },
-    "5": {
-        "class_type": "EmptyLatentImage",
-        "inputs": {
-            "batch_size": 1,
-            "height": 512,
-            "width": 512
-        }
-    },
-    "6": {
-        "class_type": "CLIPTextEncode",
-        "inputs": {
-            "clip": [
-                "4",
-                1
-            ],
-            "text": "masterpiece best quality girl"
-        }
-    },
-    "7": {
-        "class_type": "CLIPTextEncode",
-        "inputs": {
-            "clip": [
-                "4",
-                1
-            ],
-            "text": "bad hands"
-        }
-    },
-    "8": {
-        "class_type": "VAEDecode",
-        "inputs": {
-            "samples": [
-                "3",
-                0
-            ],
-            "vae": [
-                "4",
-                2
-            ]
-        }
-    },
-    "9": {
-        "class_type": "SaveImage",
-        "inputs": {
-            "filename_prefix": "ComfyUI",
-            "images": [
-                "8",
-                0
-            ]
-        }
-    }
-}
-"""
-        self.style = self.set_style()
+        self.prompt_text 
         
-    def set_style(self, style=None):
-        if not style:
-            style = """
+    def get_theme(self):
+        with open("image/theme.json", "r" ) as f:
+            self.theme=json.load(f)
+            return json.load(f)
+            
+    def set_image_primer(self, image_primer=None):
+        if not image_primer:
+            image_primer = """
             dramatic scene, anime style, ultra hd, realistic, vivid cyberpunk colors, highly detailed, UHD drawing, pen and ink, t-shirt design, illustration,
             """
-        self.style = style
-        return style
+        self.image_primer = image_primer
+        return image_primer
           
 
     async def generate_image(self, prompt):
         self.prompt = json.loads(self.prompt_text)
-        self.prompt["6"]["inputs"]["text"] = f"{prompt}, {self.style}"
+        self.prompt["87"]["text_positive"]["text"] = f"{prompt}, {self.image_primer}"
         
         p = {"prompt": self.prompt}
         data = json.dumps(p).encode('utf-8')

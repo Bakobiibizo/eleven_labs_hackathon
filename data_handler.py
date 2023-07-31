@@ -4,7 +4,7 @@ from voice.eleven_labs import TextToSpeach
 from image.generate_image import GenerateImage
 from text.context_window import ContextWindow
 from tool_handler import ToolHandler
-from fastapi import HTTPException, requests
+from fastapi import HTTPException
 import asyncio
 
 class DataHandler:
@@ -14,7 +14,31 @@ class DataHandler:
         self.voice = TextToSpeach()
         self.image = GenerateImage()
         self.messages = Messages()  
-        self.tools = ToolHandler("Narrator")      
+        self.tools = ToolHandler("Narrator")    
+        
+        
+    def handle_command_chat(self, content:str, role:str=None) -> str:
+        role = role
+        if not role:
+            role = "user"
+        if not role in ["user", "assistant", "system"]:
+            role = "user"
+        if not content:
+            raise HTTPException(
+                status_code=400, 
+                detail="Content is required. Content is a string of text meant to be sent to the chat bot api."
+                )
+        message = self.messages.create_message(role=role, content=content)
+        self.context.add_message(message=message)
+        messages = []
+        for message in self.context.get_context():
+            messages.append({
+                "content": message.content,
+                "role": message.role
+            })
+        assistant_message = self.text.send_chat_complete(messages=messages).choices[0].message
+        return assistant_message.content
+
         
     def handle_chat(self, content:str, role:str=None) -> str:
         role = role

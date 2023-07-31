@@ -157,4 +157,3 @@ cython_debug/
 .aider*
 .aider.chat.history.md
 testing.py
-ingestion

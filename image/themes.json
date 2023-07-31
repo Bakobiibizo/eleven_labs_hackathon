@@ -25,7 +25,7 @@
     },
     "15": {
       "inputs": {
-        "value": 650762238018820
+        "value": 605150807796115
       },
       "class_type": "SeargeIntegerConstant"
     },
@@ -51,7 +51,7 @@
     },
     "28": {
       "inputs": {
-        "noise_seed": 962145725457133,
+        "noise_seed": 751124281828662,
         "steps": 25,
         "cfg": 7,
         "sampler_name": "dpmpp_2m_sde_gpu",
@@ -133,7 +133,7 @@
     },
     "38": {
       "inputs": {
-        "value": 1
+        "value": 4
       },
       "class_type": "SeargeIntegerConstant"
     },
@@ -249,7 +249,7 @@
       "inputs": {
         "pos_r": [
           "87",
-          0
+          1
         ],
         "neg_r": [
           "87",
@@ -486,7 +486,7 @@
     "86": {
       "inputs": {
         "lora_name": "sd_xl_offset_example-lora_1.0.safetensors",
-        "strength_model": 0.5000000000000001,
+        "strength_model": 1.0000000000000004,
         "strength_clip": 1,
         "model": [
           "10",
@@ -501,9 +501,9 @@
     },
     "87": {
       "inputs": {
-        "text_positive": "man with a holographic vison sitting in a chair with computer equipment around him",
+        "text_positive": "hacker encountering a firewall in the 'verse",
         "text_negative": "ugly, gross, misshapen, poorly drawn",
-        "style": "sai-neonpunk",
+        "style": "futuristic-retro futurism",
         "log_prompt": "No"
       },
       "class_type": "SDXLPromptStyler"
@@ -551,7 +551,7 @@
     },
     "113": {
       "inputs": {
-        "filename_prefix": "2023-07-30/image",
+        "filename_prefix": "2023-07-31/image",
         "images": [
           "112",
           0

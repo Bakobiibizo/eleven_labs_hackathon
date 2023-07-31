@@ -1,15 +1,26 @@
 import uvicorn
-
 from data_handler import DataHandler
 from typing import Optional
-from flask import Flask, Request
-from flask_cors import CORS
+from fastapi import FastAPI
+from fastapi.responses import FileResponse
+from fastapi.middleware.cors import CORSMiddleware
 
-app = Flask(__name__)
+app = FastAPI()
 
-CORS(app)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 handler = DataHandler()
+
+@app.get("/public")
+def read_image():
+    return FileResponse('splash.png', media_type='public/png')
 
 @app.get("/")
 def root():
@@ -17,7 +28,7 @@ def root():
 
 @app.post("/chat")
 def chat(content: str, role: Optional[str]) -> str:
-    return handler.handle_chat(content=content, role=role)
+    return handler.handle_command_chat(content=content, role=role)
 
 @app.get("/text")
 def text(content: str, role: Optional[str]) -> str:

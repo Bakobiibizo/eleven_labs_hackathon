@@ -1,7 +1,8 @@
 openai
 elevenlabs
-fastapi
 uvicorn
+fastapi
+fastapi-cors
 watchfiles
 pydub
 python-dotenv
@@ -10,5 +11,4 @@ aiohttp
 asyncio
 pillow
 ffmpeg-python
-urllib
-glob
+blob
