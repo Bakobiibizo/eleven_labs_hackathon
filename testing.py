@@ -29,8 +29,9 @@ class Test:
         voice_id = "AZnzlk1XvdvUeBnXmlld"
         byte_string = self.voice.tts(text=prompt, voice_id=voice_id)
 
-        base64_string = base64.b64decode(byte_string.getvalue()).encode("utf-8")
-        audio.export(byte_string, format="mp3")
+        with open('output.mp3', 'wb') as f:
+            f.write(byte_string)
+        print("Voice has been saved to output.mp3")
 
 
 Test()
