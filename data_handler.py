@@ -85,22 +85,7 @@ class DataHandler:
             )
         return asyncio.run(self.image.generate_image(prompt=prompt))
     
-    def update_image(self, prompt: str) -> str: 
-        if not prompt:
-            raise HTTPException(
-                status_code=400,
-                detail="Prompt is required. Prompt is a string of text meant to be sent to the image api."
-            )
-        for narrator in self.tools.command_executor.command_dispatcher.values():
-            message = ""
-            if narrator.name == "Narrator":
-                message = self.tools.command_executor.execute_command(narrator.tool["Narrator"](prompt=prompt))
-        image = asyncio.run(self.image.generate_image(prompt=prompt))
-        body = {
-            "imageString": image,
-            "overlayText": message
-        }
-        return body
+
     
         
 if __name__ == "__main__":
