@@ -13,6 +13,7 @@ class GenerateImage:
         self.image_ids = None
         self.set_image_primer()
         self.get_theme()
+        self.style = None
 
     def get_theme(self):
         with open("image/theme.json", "r") as f:
@@ -34,15 +35,18 @@ class GenerateImage:
         if not prompt:
             raise ValueError("prompt is required")
         self.prompt = prompt
-        self.prompt["87"]["text_positive"]["text"] = f"{self.prompt}, {self.image_primer}"
+        with open("image/theme.json", "r") as theme:
+            self.theme = json.load(theme)
+        print(self.theme)
+        self.theme["87"]["inputs"]["text_positive"] = f"{self.prompt}, {self.image_primer}"
 
         p = {"prompt": self.prompt}
         data = json.dumps(p).encode('utf-8')
 
         for _ in range(self.MAX_RETRIES):
             try:
-                req = asyncio.run(request.Request("http://127.0.0.1:8188/prompt", data=data))
-                image_data = json.loads(request.urlopen(req).read())
+                req = request.Request("http://127.0.0.1:8188/prompt", data=data)
+                image_data = asyncio.run(json.loads(request.urlopen(req).read()))
                 if 'error' in image_data or 'false' in image_data['success']:
                     raise Exception('Error or false success in image generation')
                 break
@@ -59,8 +63,8 @@ class GenerateImage:
             image_ids = json.load(f)
             if image_id not in [item['image_id'] for item in image_ids]:
                 image_ids.append({'image_id': image_id, 'image_number': image_number})
-                with open("image/image_ids.json", "w") as f:
-                    json.dump(image_ids, f)
+                with open("image/image_ids.json", "w") as file:
+                    json.dump(image_ids, file)
 
         filename = f"D:/stable-diffusion-webui/ComfyUI/output/ComfyUI_{str(image_number).zfill(5)}_.png"
         print(filename)
