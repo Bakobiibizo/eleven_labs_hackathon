@@ -9,9 +9,17 @@ handler = DataHandler()
 
 app = FastAPI()
 
+app.build_middleware_stack(
+    origins = "173.3.221.137",
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 app.add_middleware(
     CORSMiddleware,
 )
+
 
 @app.get("/")
 def root():

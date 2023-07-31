@@ -14,10 +14,10 @@ class NarroratorTool(ToolHandler):
         self.context = ContextWindow(window_size=30)
                 
     def create_message(self, prompt: str) -> str:
-        return self.messages.create_message(role="system", content=prompt)
+        return self.messages.create_message(role="system", content=prompt).model_dump()
             
     def command(self, prompt: str) -> str:
-        return self.text.send_chat_complete(messages=self.create_message(role="system", content=prompt)).choices[0].message.content
+        return self.text.send_chat_complete([self.create_message(prompt)]).choices[0].message.content
     
     
 class Narrator:
