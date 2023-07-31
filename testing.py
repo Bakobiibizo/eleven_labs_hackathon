@@ -1,6 +1,7 @@
 from text.openai_text import OpenAITextGeneration
 from image.generate_image import GenerateImage
 from voice.eleven_labs import TextToSpeach
+from pydub.playback import play
 import base64
 
 
@@ -28,10 +29,13 @@ class Test:
         prompt = "this is a test of the server"
         voice_id = "AZnzlk1XvdvUeBnXmlld"
         byte_string = self.voice.tts(text=prompt, voice_id=voice_id)
-
-        with open('output.mp3', 'wb') as f:
+        play(byte_string)
+        with open('output/output.mp3', 'wb') as f:
             f.write(byte_string)
-        print("Voice has been saved to output.mp3")
+        print("Voice has been saved to output/output.mp3")
+        return "success"
 
 
-Test()
+if __name__ == "__main__.py":
+    test = Test()
+    test.test_voice()
