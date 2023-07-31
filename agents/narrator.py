@@ -27,14 +27,11 @@ class Narrator:
     
     def send_narration(self, prompt: str) -> str:
         primer = self.get_primer()
-        context = self.get_context()
-        prompt = f"{primer}\n {prompt}\n----\nPREVIOUS CONTEXT: {context}"
+        primer.append(f"{prompt}\n")
+        primer.append(self.get_context())        
         return self.tool.command(json.load(prompt))
         
     def get_primer(self) -> str:
-        with open ("agents/prompts.json", "r") as f:
-            json_string = f.read()
-            json_list = json.loads(json_string)
-            if json_list[0]["message_type"] == "Narration" and json_list[0]["message_title"] == "Narrator":
-                return json_list[0]["message"]["content"]
-    
+        return self.tool.get_message_by_type("Primer", "Narrator")
+                   
+            

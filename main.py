@@ -1,5 +1,5 @@
 import uvicorn
-from fastapi import FastAPI, requests, status
+from fastapi import FastAPI, requests
 from fastapi.middleware.cors import CORSMiddleware
 from data_handler import DataHandler
 from typing import Optional

@@ -27,7 +27,8 @@ from agents.narrator import Narrator
 #image = handler.handle_image(prompt="cat")
 #print(image)
 
-
+prompt="the players got pulled over by the police, they sitting in the car as the police officer walks up, day time"
 narrator = Narrator()
 primer = narrator.get_primer()
-print(primer)
+context = narrator.tool.get_message_by_type("Primer", "Narrator")
+print(context)

@@ -12,11 +12,7 @@ class DataHandler:
         self.text = OpenAITextGeneration()
         self.voice = TextToSpeach()
         self.image = GenerateImage()
-        self.messages = Messages()
-                
-    def handle_narration(self, prompt: str) -> str:
-        message = self.messages.create_message(role="system", content=prompt)
-        
+        self.messages = Messages()        
         
     def handle_chat(self, content:str, role:str=None) -> str:
         role = role
@@ -29,9 +25,14 @@ class DataHandler:
                 status_code=400, 
                 detail="Content is required. Content is a string of text meant to be sent to the chat bot api."
                 )
-        message = self.message.create_message(role=role, content=content)
+        message = self.messages.create_message(role=role, content=content)
         self.context.add_message(message=message)
-        messages = self.context.get_context()
+        messages = []
+        for message in self.context.get_context():
+            messages.append({
+                "content": message.content,
+                "role": message.role
+            })
         assistant_message = self.text.send_chat_complete(messages=messages).choices[0].message
         self.context.add_message(message=assistant_message)
         return assistant_message.content

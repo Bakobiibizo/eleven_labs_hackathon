@@ -64,12 +64,12 @@ class ToolHandler(Tool):
                 message = obj["message"]
                 if isinstance(message, dict):
                     return {
-                        "Role": message["role"],
-                        "Content": message["content"]
+                        "role": message["role"],
+                        "content": message["content"]
                     }
                 else:
                     return {
-                        "Message": message["content"]
+                        "message": message["content"]
                     }
 
     def json_command(self, name: str, command: str) -> str:  
@@ -86,5 +86,3 @@ class ToolHandler(Tool):
             json_command_string = self.json_command(name, command)
         )
         return info.model_dump() 
-    def command(self, ):
-        return 
