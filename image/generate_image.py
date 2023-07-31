@@ -25,6 +25,9 @@ class GenerateImage:
         return image_primer
           
 
+    MAX_RETRIES = 3  # Maximum number of retries for image generation
+    image_count = 0  # Class variable to keep track of the number of images generated
+
     async def generate_image(self, prompt):
         self.prompt = json.loads(self.prompt_text)
         self.prompt["87"]["text_positive"]["text"] = f"{prompt}, {self.image_primer}"
@@ -32,10 +35,21 @@ class GenerateImage:
         p = {"prompt": self.prompt}
         data = json.dumps(p).encode('utf-8')
         
-        req =  request.Request("http://127.0.0.1:8188/prompt", data=data)
-        
-        image_data = json.loads(request.urlopen(req).read())
-        image_number = image_data["number"]+1
+        for _ in range(self.MAX_RETRIES):
+            try:
+                req =  request.Request("http://127.0.0.1:8188/prompt", data=data)
+                image_data = json.loads(request.urlopen(req).read())
+                if 'error' in image_data or 'false' in image_data['success']:
+                    raise Exception('Error or false success in image generation')
+                break
+            except Exception as e:
+                print(f'Error in image generation: {e}. Retrying...')
+        else:
+            print('Failed to generate image after maximum number of retries')
+            return None
+
+        self.image_count += 1
+        image_number = self.image_count
         image_id = image_data["prompt_id"]
         
         with open("image\image_ids.json", "r") as f:
@@ -44,19 +58,17 @@ class GenerateImage:
                 image_ids.append({'image_id': image_id, 'image_number': image_number})
                 with open("image/image_ids.json", "w") as f:
                     json.dump(image_ids, f)
-            else: 
-                image_number = next((item['image_number'] for item in image_ids if item['image_id'] == image_id), None)
 
-        png_count = len(glob.glob("D:/stable-diffusion-webui/comfyui/output/*.png"))
-
-        image_number += png_count
-        print(image_number)
-        
         filename = f"D:/stable-diffusion-webui/ComfyUI/output/ComfyUI_{str(image_number).zfill(5)}_.png"
         print(filename)
     
-        while not os.path.isfile(filename):
-            await asyncio.sleep(1)  
+        for _ in range(self.MAX_RETRIES):
+            if os.path.isfile(filename):
+                break
+            await asyncio.sleep(1)
+        else:
+            print('Failed to find image file after maximum number of retries')
+            return None
 
         with open(filename, "rb") as f:
             image_data = f.read()
