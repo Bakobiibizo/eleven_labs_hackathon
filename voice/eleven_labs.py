@@ -41,7 +41,10 @@ class TextToSpeach():
             "similarity_boost": 0.5
           }
         }
-        return self.tts_request()
+        audio_data = self.tts_request()
+        if isinstance(audio_data, str):
+            audio_data = audio_data.encode('utf-8')
+        return audio_data
 
     def voices_request(self):
         response = requests.get(url=self.url, json=self.data, headers=self.headers)
