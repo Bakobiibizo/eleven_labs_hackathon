@@ -9,3 +9,4 @@ class LoaderSelector:
     def pdf_loader(self):
         self.loader = PyPdfLoader()
         return self.loader
+
