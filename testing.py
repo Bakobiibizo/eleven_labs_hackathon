@@ -38,4 +38,4 @@ class Test:
 
 if __name__ == "__main__.py":
     test = Test()
-    test.test_voice()
+    print(test.test_voice())
