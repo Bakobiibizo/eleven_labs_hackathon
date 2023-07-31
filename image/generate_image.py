@@ -33,7 +33,7 @@ class GenerateImage:
         print(f"Prompt before JSON loading: {prompt}")
         if not prompt:
             raise ValueError("prompt is required")
-        self.prompt = json.loads(prompt)
+        self.prompt = prompt
         self.prompt["87"]["text_positive"]["text"] = f"{self.prompt}, {self.image_primer}"
 
         p = {"prompt": self.prompt}
