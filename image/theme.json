@@ -1,7 +1,7 @@
 {
     "6": {
       "inputs": {
-        "prompt": "illustration, crisp linework, violent scenes, gangsters, weapon fire, in the style of Android Net Runner, embedding:sd_xl_offset_example-lora_1.0.safetensors"
+        "prompt": "~*~cinematic~*~ photo of abstraction, 35mm photograph, vibrant rusted dieselpunk, style of Andriod Netrunner"
       },
       "class_type": "SeargePromptText"
     },
@@ -25,7 +25,7 @@
     },
     "15": {
       "inputs": {
-        "value": 605150807796115
+        "value": 866867224763307
       },
       "class_type": "SeargeIntegerConstant"
     },
@@ -38,7 +38,7 @@
     },
     "26": {
       "inputs": {
-        "value1": 8,
+        "value1": 2,
         "value2": 2
       },
       "class_type": "SeargeFloatPair"
@@ -51,11 +51,20 @@
     },
     "28": {
       "inputs": {
-        "noise_seed": 751124281828662,
-        "steps": 25,
-        "cfg": 7,
-        "sampler_name": "dpmpp_2m_sde_gpu",
-        "scheduler": "exponential",
+        "noise_seed": [
+          "15",
+          0
+        ],
+        "steps": [
+          "31",
+          0
+        ],
+        "cfg": [
+          "34",
+          0
+        ],
+        "sampler_name": "dpmpp_2m",
+        "scheduler": "karras",
         "base_ratio": [
           "35",
           0
@@ -97,13 +106,13 @@
     },
     "31": {
       "inputs": {
-        "value": 20
+        "value": 30
       },
       "class_type": "SeargeIntegerConstant"
     },
     "33": {
       "inputs": {
-        "value": 3
+        "value": 2
       },
       "class_type": "SeargeFloatConstant"
     },
@@ -133,7 +142,7 @@
     },
     "38": {
       "inputs": {
-        "value": 4
+        "value": 1
       },
       "class_type": "SeargeIntegerConstant"
     },
@@ -148,7 +157,7 @@
           0
         ],
         "pos_r": [
-          "87",
+          "6",
           0
         ],
         "neg_g": [
@@ -249,7 +258,7 @@
       "inputs": {
         "pos_r": [
           "87",
-          1
+          0
         ],
         "neg_r": [
           "87",
@@ -403,6 +412,16 @@
       },
       "class_type": "ConditioningCombine"
     },
+    "63": {
+      "inputs": {
+        "filename_prefix": "2023-07-31",
+        "images": [
+          "97",
+          0
+        ]
+      },
+      "class_type": "SaveImage"
+    },
     "75": {
       "inputs": {
         "conditioning_to_strength": [
@@ -486,7 +505,7 @@
     "86": {
       "inputs": {
         "lora_name": "sd_xl_offset_example-lora_1.0.safetensors",
-        "strength_model": 1.0000000000000004,
+        "strength_model": 0.4,
         "strength_clip": 1,
         "model": [
           "10",
@@ -501,9 +520,9 @@
     },
     "87": {
       "inputs": {
-        "text_positive": "hacker encountering a firewall in the 'verse",
+        "text_positive": "holograms of people interacting in the meta verse",
         "text_negative": "ugly, gross, misshapen, poorly drawn",
-        "style": "futuristic-retro futurism",
+        "style": "futuristic-retro cyberpunk",
         "log_prompt": "No"
       },
       "class_type": "SDXLPromptStyler"
@@ -536,10 +555,28 @@
       },
       "class_type": "SDXLAspectRatio"
     },
-    "112": {
+    "94": {
       "inputs": {
+        "tile_mode": "Both",
         "samples": [
           "28",
+          0
+        ],
+        "input_vae": [
+          "12",
+          0
+        ],
+        "output_vae": [
+          "10",
+          2
+        ]
+      },
+      "class_type": "ReencodeLatent"
+    },
+    "97": {
+      "inputs": {
+        "samples": [
+          "94",
           0
         ],
         "vae": [
@@ -548,15 +585,5 @@
         ]
       },
       "class_type": "VAEDecode"
-    },
-    "113": {
-      "inputs": {
-        "filename_prefix": "2023-07-31/image",
-        "images": [
-          "112",
-          0
-        ]
-      },
-      "class_type": "SaveImage"
     }
   }

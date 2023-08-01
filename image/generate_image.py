@@ -3,6 +3,9 @@ import base64
 import json
 import os
 from urllib import request
+from logger import debug_logger
+
+logger = debug_logger
 
 
 class GenerateImage:
@@ -14,47 +17,65 @@ class GenerateImage:
         self.set_image_primer()
         self.get_theme()
         self.style = None
+        self.image_count = 0
 
     def get_theme(self):
         with open("image/theme.json", "r") as f:
             self.theme = f.read()
+            logger.log(level=10, msg=self.theme)
             return json.loads(self.theme)
+        
+    def set_style(self, style=None):
+        if not style:
+            style = """dramatic scene, anime style, ultra hd, realistic, vivid cyberpunk colors, highly detailed, 
+            UHD drawing, pen and ink, t-shirt design, illustration,"""
+        self.style = style
+        logger.log(level=10, msg=self.style)
+        return style
 
     def set_image_primer(self, image_primer=None):
         if not image_primer:
             image_primer = """dramatic scene, anime style, ultra hd, realistic, vivid cyberpunk colors, 
             highly detailed, UHD drawing, pen and ink, t-shirt design, illustration,"""
         self.image_primer = image_primer
+        logger.log(level=10, msg=self.image_primer)
         return image_primer
+    
+    def set_prompt(self, prompt):
+        logger.log(level=10, msg=prompt)
+        try:
+            self.theme = self.get_theme()  # Ensure self.theme is a valid dictionary
+            self.theme["87"]["inputs"]["text_positive"] = f"{str(prompt)}, {str(self.image_primer)}"
+            logger.log(level=10, msg=self.theme)
+        except KeyError as e:
+            print(f"Error accessing theme data: {e}")
+        except json.JSONDecodeError as e:
+            print(f"Error parsing theme data as JSON: {e}")
+        self.prompt = self.theme
+        logger.log(level=10, msg=self.prompt)
+        return self.prompt
 
-    MAX_RETRIES = 5  # Maximum number of retries for image generation
-    image_count = 0  # Class variable to keep track of the number of images generated
 
-    def generate_image(self, prompt):
-        print(f"Prompt before JSON loading: {prompt}")
-        if not prompt:
-            raise ValueError("prompt is required")
-        self.prompt = prompt
-        with open("image/theme.json", "r") as theme:
-            self.theme = json.load(theme)
-        print(self.theme)
-        self.theme["87"]["inputs"]["text_positive"] = f"{self.prompt}, {self.image_primer}"
+    async def generate_image(self, prompt, style=None, image_primer=None):
+        self.set_image_primer(image_primer=image_primer)
+        self.get_theme()
+        self.set_style(style=style)
+
+        self.prompt = self.set_prompt(prompt)
 
         p = {"prompt": self.prompt}
+        print(self.prompt)
         data = json.dumps(p).encode('utf-8')
+        image_data = None
 
-        for _ in range(self.MAX_RETRIES):
-            try:
-                req = request.Request("http://127.0.0.1:8188/prompt", data=data)
-                image_data = asyncio.run(json.loads(request.urlopen(req).read()))
-                if 'error' in image_data or 'false' in image_data['success']:
-                    raise Exception('Error or false success in image generation')
-                break
-            except Exception as e:
-                print(f'Error in image generation: {e}. Retrying...')
-        else:
-            print('Failed to generate image after maximum number of retries')
-            return None
+        try:
+            req = asyncio.run(request.Request("http://127.0.0.1:8188/prompt", data=data))
+            image_data = await json.loads(request.urlopen(req).read())
+
+            if 'error' in image_data or 'false' in image_data['success']:
+                raise Exception('Error or false success in image generation')
+        except Exception as e:
+            print(f'Error in image generation: {e}. Retrying...')
 
         self.image_count += 1
         image_number = self.image_count
@@ -85,9 +106,4 @@ class GenerateImage:
         serialized_image = encoded_image_data.decode('utf-8')
         return serialized_image
 
-    def set_style(self, style=None):
-        if not style:
-            style = """dramatic scene, anime style, ultra hd, realistic, vivid cyberpunk colors, highly detailed, 
-            UHD drawing, pen and ink, t-shirt design, illustration,"""
-        self.style = style
-        return style
+

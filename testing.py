@@ -2,10 +2,13 @@ from text.openai_text import OpenAITextGeneration
 from image.generate_image import GenerateImage
 from voice.eleven_labs import TextToSpeach
 from pydub.playback import play
-import base64
+from logger import debug_logger
+import asyncio
+
+logger = debug_logger
 
 
-class Test:
+class Test():
     def __init__(self):
         self.text = OpenAITextGeneration()
         self.image = GenerateImage()
@@ -13,7 +16,7 @@ class Test:
 
     def test_image(self):
         image_data = self.image.generate_image("a hacker encountering a firewall in cyberspace")
-        print(image_data)
+        logger.log(level=10, msg=image_data)
         return image_data
 
     def test_text(self):
@@ -22,7 +25,7 @@ class Test:
             "content": " this is the content"
         }]
         response = self.text.send_chat_complete(messages)
-        print(response)
+        logger.log(level=10, msg=response)
         return response
 
     def test_voice(self):
@@ -30,12 +33,16 @@ class Test:
         voice_id = "AZnzlk1XvdvUeBnXmlld"
         byte_string = self.voice.tts(text=prompt, voice_id=voice_id)
         play(byte_string)
+        logger.log(level=10, msg=byte_string)
         with open('output/output.mp3', 'wb') as f:
             f.write(byte_string)
         print("Voice has been saved to output/output.mp3")
         return "success"
 
 
-if __name__ == "__main__.py":
+
+def run_test_async():
     test = Test()
-    print(test.test_voice())
+    test.test_image()
+
+run_test_async()

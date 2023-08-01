@@ -78,12 +78,13 @@ class DataHandler:
         return self.voice.tts(text=message, voice_id=voice_id)
     
     def handle_image(self, prompt: str) -> str:
+        prompt = prompt
         if not prompt:
             raise HTTPException(
                 status_code=400,
                 detail="Prompt is required. Prompt is a string of text meant to be sent to the image api."
             )
-        return asyncio.run(self.image.generate_image(prompt=prompt))
+        return self.image.generate_image(prompt=prompt)
     
 
     
