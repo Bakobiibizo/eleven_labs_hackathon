@@ -17,13 +17,12 @@ class OpenAITextGeneration:
         self.model = model
         try:
             formatted_messages = []
-            messages = [{
-                "messages": formatted_messages
-            }]
-            print(self.messages, self.model)
+            for message in self.messages:
+                formatted_messages.append(message)
+            print(formatted_messages, self.model)
             response = openai.ChatCompletion.create(
                 model=self.model, 
-                messages=self.formatted_messages, 
+                messages=formatted_messages, 
                 stream=True
             )
             return response

@@ -15,10 +15,10 @@ class Messages:
         self.start_context()
     
     def create_message(self, role: str, content: str, model: str) -> Message:
-        Message(role=role, content=content)
-        self.context_window.add_message(message=Message(role=role, content=content, model=model))
+        message = Message(role=role, content=content)
+        self.context_window.add_message(message=message)
         messages = self.context_window.get_context()
-        return messages     
+        return messages
     
     def start_context(self):
         self.context_window.start_context()
