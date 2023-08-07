@@ -8,19 +8,21 @@ from json.encoder import JSONEncoder
 encoder = JSONEncoder(sort_keys=True,ensure_ascii=True)
 
 
-
-
 class Messages:
     def __init__(self):
         self.context_window = ContextWindow(window_size=50)
-        self.context = self.context_window.start_context()
+        self.context = self.context_window.get_context()
+        self.start_context()
     
-    def create_message(self, role: str, content: str) -> Message:
+    def create_message(self, role: str, content: str, model: str) -> Message:
         Message(role=role, content=content)
-        self.context_window.add_message(message=Message(role=role, content=content))
+        self.context_window.add_message(message=Message(role=role, content=content, model=model))
         messages = self.context_window.get_context()
-        return messages
-        
+        return messages     
+    
+    def start_context(self):
+        self.context_window.start_context()
+           
 
     def prompt_chain_message_to_json(self, chains: list) -> str:
         return json.dumps(chains)

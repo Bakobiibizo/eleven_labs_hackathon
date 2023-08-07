@@ -1,4 +1,3 @@
-import json
 import os
 import openai
 from dotenv import load_dotenv
@@ -14,12 +13,18 @@ class OpenAITextGeneration:
         self.openai_chat = Messages()
 
     def send_chat_complete(self, messages, model="gpt-3.5-turbo"):
+        self.messages= messages
+        self.model = model
         try:
             formatted_messages = []
-            for message in messages:
-                formatted_messages.append(message)
+            messages = [{
+                "messages": formatted_messages
+            }]
+            print(self.messages, self.model)
             response = openai.ChatCompletion.create(
-                model, messages=formatted_messages, stream=True
+                model=self.model, 
+                messages=self.formatted_messages, 
+                stream=True
             )
             return response
         except ConnectionError as e:
