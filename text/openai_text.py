@@ -13,16 +13,18 @@ class OpenAITextGeneration:
     def __init__(self):
         self.openai_chat = Messages()
 
-    def send_chat_complete(self, content, model="gpt-3.5-turbo", role="user"):
+    def send_chat_complete(self, messages, model="gpt-3.5-turbo"):
         try:
-            message = self.messages.create_message(role=role, content=content)
-            messages = []
-            for message in self.context.get_context():
-                messages.append(json.loads(message.content))            
+            formatted_messages = []
+            for message in messages:
+                formatted_messages.append(message)
             response = openai.ChatCompletion.create(
-                model, messages=messages, stream=True
+                model, messages=formatted_messages, stream=True
             )
             return response
         except ConnectionError as e:
             print(f"There was an error connecting to OpenAI: {e}")
             raise
+
+    def parse_openai_response(self, response):
+        return response['choices'][0]['message']['content']
