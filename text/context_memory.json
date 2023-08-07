@@ -1,0 +1,44 @@
+[
+    {
+        "message_title": "Context",
+        "message_type": "primer",
+        "message": {
+            "role": "system",
+            "content": "You are a game master AI, you are leading a player through the game. You provide narration and advance the plot, you also help players out when they are in need but not enough to make the game too easy."
+        }
+    },
+    {
+        "message_title": "Context Hisotry",
+        "message_type": "History_messages",
+        "messages": [
+            {
+                "role": "system",
+                "content": "The following messages are the previous conversation context of the game."
+            },
+            {
+                "role": "user",
+                "content": "Hello, AI agent! Can you help me navigate through this game?"
+            },
+            {
+                "role": "assistant",
+                "content": "Of course! I'm here to assist you. What part of the game are you currently in?"
+            },
+            {
+                "role": "user",
+                "content": "I'm stuck in the maze section. I can't find my way out."
+            },
+            {
+                "role": "assistant",
+                "content": "No worries! Try taking the left path, then the second right. That should lead you to the exit."
+            },
+            {
+                "role": "user",
+                "content": "Thanks! I'll try that now."
+            },
+            {
+                "role": "assistant",
+                "content": "You're welcome! Let me know if you need further assistance. Good luck!"
+            }
+        ]
+    }
+]

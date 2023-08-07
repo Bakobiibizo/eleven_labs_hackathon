@@ -1,0 +1,137 @@
+[
+    {
+        "name": "Rachel",
+        "voice_id": "21m00Tcm4TlvDq8ikWAM",
+        "age": "young",
+        "gender": "female",
+        "accent": "american",
+        "description": "low energy mid ranged female voice, good for npcs and charcters not enjoying what they are doing",
+        "use_case": "npc voice"
+    },
+    {
+        "name": "Clyde",
+        "voice_id": "2EiwWnXFnvU5JabPnv8n",
+        "age": "middle aged",
+        "gender": "male",
+        "accent": "american",
+        "description": "confident low mid voice, good for npcs that will stay around for a while or that players will interact with often.",
+        "use_case": "npc voice"
+    },
+    {
+        "name": "Domi",
+        "voice_id": "AZnzlk1XvdvUeBnXmlld",
+        "age": "young",
+        "gender": "female",
+        "accent": "american",
+        "description": "high pitched female voice that would be good for characters that are explaining things or telling someone how something works",
+        "use_case": "npc voice"
+    },
+    {
+        "name": "Dave",
+        "voice_id": "CYw3kZ02Hs0563khs1Fj",
+        "age": "young",
+        "gender": "male",
+        "accent": "british-essex",
+        "description": "A stuck up high mid male voice that would be good for characters that you do not want the players to like.",
+        "use_case": "enemy npc voice"
+    },
+    {
+        "name": "Fin",
+        "voice_id": "D38z5RcWu1voky8WS1ja",
+        "age": "old",
+        "gender": "male",
+        "accent": "irish",
+        "description": "Mischievous male voice that would be good for enigmatic charcaters.",
+        "use_case": "npc voice"
+    },
+    {
+        "name": "Bella",
+        "voice_id": "EXAVITQu4vr4xnSDxMaL",
+        "age": "young",
+        "gender": "female",
+        "accent": "american",
+        "description": "a nice warm female voice good for explanitory dialouge or narrations",
+        "use_case": "narration or npcs"
+    },
+    {
+        "name": "Antoni",
+        "voice_id": "ErXwobaYiN019PkySvjV",
+        "age": "young",
+        "gender": "male",
+        "accent": "american",
+        "description": "a fairly dull mid toned male voice that would be good for npcs that are not enjoying what they are doing",
+        "use_case": "npc voice"
+    },
+    {
+        "name": "Thomas",
+        "voice_id": "GBv7mTt0atIp3Br8iCZE",
+        "age": "young",
+        "gender": "male",
+        "accent": "american",
+        "description": "a mysterious low male voice, good for narratation or enigmatic characters",
+        "use_case": "npc voice or narration"
+    },
+    {
+        "name": "Charlie",
+        "voice_id": "IKne3meq5aSn9XLyUdCD",
+        "age": "middle aged",
+        "gender": "male",
+        "accent": "australian",
+        "description": "fairly normal and unremarkable male voice, good for any npc",
+        "use_case": "npc voice"
+    },
+    {
+        "name": "Emily",
+        "voice_id": "LcfcDJNUP1GQjkzn1xUU",
+        "age": "young",
+        "gender": "female",
+        "accent": "american",
+        "description": "a intelligent but bored voice, good for npcs that think they are smarter than everyone else.",
+        "use_case": "npc voice"
+    },
+    {
+        "name": "Elli",
+        "voice_id": "MF3mGyEYCl7XYWbV9V6O",
+        "age": "young",
+        "gender": "female",
+        "accent": "american",
+        "description": "overly confident youth voice, good for npcs that really believe in what they are doing.",
+        "use_case": "npc voice"
+    },
+    {
+        "name": "Callum",
+        "voice_id": "N2lVS1w4EtoT3dr4eOWO",
+        "age": "middle aged",
+        "gender": "male",
+        "accent": "american",
+        "description": "darker contained voice that would be good for a concerned npc.",
+        "use_case": "npc voice"
+    },
+    {
+        "name": "Mother-_Old_English_Woman",
+        "voice_id": "buegP99rlGJGAGl46SxK",
+        "age": "old",
+        "gender": "female",
+        "accent": "british",
+        "description": "a warm and intelligent female voice, would be good for a leader or someone in charge also good for narration",
+        "use_case": "npc or narration"
+    },
+    {
+        "name": "The_Radio_Guy",
+        "voice_id": "fdlCfmIzHNodE9Z0newE",
+        "age": "middle_aged",
+        "gender": "male",
+        "accent": "american",
+        "description": "salt of the earth kind of voice, good for a very normal npc",
+        "use_case": "npc"
+    },
+    {
+        "name": "[Ixel]_Slow_speaking_and_deep_British_voice,_ideal_for_books!",
+        "voice_id": "tQGo4CObOu6hUEgRExhA",
+        "age": "old",
+        "gender": "male",
+        "accent": "british",
+        "description": "This is the game's main narrator, use this voice for any major game narration or to ineract with the player.",
+        "use_case": "narrator voice"
+    }
+]
