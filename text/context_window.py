@@ -1,9 +1,7 @@
-from tool_handler import ToolHandler
-#from text.anthropic_text import AnthropicChatBot
+import json
 
 class ContextWindow:
     def __init__(self, window_size=100):
-        self.tool = ToolHandler(name="ContextWindow")
         self.window_size = window_size
         self.context = []
 
@@ -16,7 +14,12 @@ class ContextWindow:
         return self.context
     
     def start_context(self):
-        return self.tool.get_message_by_type("Primer", "Context")
+        with open("text/prompts.json", "r", encoding="utf-8") as f:
+            json_string = f.read()
+            print(json_string)
+            for message in json_string[-self.window_size]:
+                self.add_message(message[0]["message_title"][""])
+        return self.context
     
 #    
 #class AnthropicContext(ContextWindow):

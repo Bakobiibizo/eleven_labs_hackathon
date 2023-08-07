@@ -1,37 +1,31 @@
-from text.message_defs import (
-    Message
-)
+from text.message_defs import Message
+from text.context_window import ContextWindow
 import json
 from json.encoder import JSONEncoder
+
 
 
 encoder = JSONEncoder(sort_keys=True,ensure_ascii=True)
 
 
+
+
 class Messages:
     def __init__(self):
-        pass
+        self.context_window = ContextWindow(window_size=50)
+        self.context = self.context_window.start_context()
     
     def create_message(self, role: str, content: str) -> Message:
-        from text.message_defs import Message
-        return Message(role=role, content=content)
-
-    def prompt_message_to_json(self, prompts: list) -> str:
-        return json.dumps(prompts)
-
-    def json_to_prompt_message(self, json_str: str) -> list:
-        return json.loads(json_str)
+        Message(role=role, content=content)
+        self.context_window.add_message(message=Message(role=role, content=content))
+        messages = self.context_window.get_context()
+        return messages
+        
 
     def prompt_chain_message_to_json(self, chains: list) -> str:
         return json.dumps(chains)
 
     def json_to_prompt_chain_message(self, json_str: str) -> list:
-        return json.loads(json_str)
-
-    def primer_message_to_json(self, primers: list) -> str:
-        return json.dumps(primers)
-
-    def json_to_primer_message(self, json_str: str) -> list:
         return json.loads(json_str)
 
     def persona_message_to_json(self, personas: list) -> str:

@@ -3,6 +3,7 @@ import base64
 import json
 import os
 from urllib import request
+import asyncio as asyncio
 
 
 class GenerateImage:
@@ -27,7 +28,15 @@ class GenerateImage:
         self.image_primer = image_primer
         return image_primer
 
-    MAX_RETRIES = 5  # Maximum number of retries for image generation
+    def count_down(self, filename):
+        for _ in range(60):
+            if os.path.isfile(filename):
+                break
+            asyncio.run(asyncio.sleep(1))
+        else:
+            print('Failed to find image file after maximum number of retries')
+            return None
+
     image_count = 0  # Class variable to keep track of the number of images generated
 
     def generate_image(self, prompt):
@@ -43,18 +52,15 @@ class GenerateImage:
         p = {"prompt": self.prompt}
         data = json.dumps(p).encode('utf-8')
 
-        for _ in range(self.MAX_RETRIES):
-            try:
-                req = request.Request("http://127.0.0.1:8188/prompt", data=data)
-                image_data = asyncio.run(json.loads(request.urlopen(req).read()))
-                if 'error' in image_data or 'false' in image_data['success']:
-                    raise Exception('Error or false success in image generation')
-                break
-            except Exception as e:
-                print(f'Error in image generation: {e}. Retrying...')
-        else:
-            print('Failed to generate image after maximum number of retries')
-            return None
+        try:
+            req = request.Request("http://127.0.0.1:8188/prompt", data=data)
+            image_data = json.loads(request.urlopen(req).read())
+            self.count_down(filename=filename)
+            if 'error' in image_data or 'false' in image_data['success']:
+                raise Exception('Error or false success in image generation')
+
+        except Exception as e:
+            print(f'Error in image generation: {e}. Retrying...')
 
         self.image_count += 1
         image_number = self.image_count
@@ -69,13 +75,7 @@ class GenerateImage:
         filename = f"D:/stable-diffusion-webui/ComfyUI/output/ComfyUI_{str(image_number).zfill(5)}_.png"
         print(filename)
 
-        for _ in range(self.MAX_RETRIES):
-            if os.path.isfile(filename):
-                break
-            asyncio.run(asyncio.sleep(1))
-        else:
-            print('Failed to find image file after maximum number of retries')
-            return None
+
 
         with open(filename, "rb") as f:
             image_data = f.read()

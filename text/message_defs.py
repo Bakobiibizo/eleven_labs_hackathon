@@ -1,11 +1,7 @@
-from pydantic import BaseModel, StrictStr
-from dataclasses import dataclass
+from pydantic import BaseModel
 from enum import Enum
 
-class RoleOptions(str, Enum):
-    USER = "user"
-    ASSISTANT = "assistant"
-    SYSTEM = "system"
+
 
 class Message(BaseModel):
     role: str
@@ -30,20 +26,14 @@ class StoredMessage(BaseModel):
         }
 
 class HistoryMessage(StoredMessage):
-    message_type: MessageType = MessageType.HISTORY_MESSAGE
+    stored_message: StoredMessage
 
-class PrimerMessage(StoredMessage):
-    message_type: MessageType = MessageType.PRIMER_MESSAGE
-    message_title: StrictStr
-
-class PromptMessage(StoredMessage):
-    message_type: MessageType = str
-    message_title: StrictStr
-
-class PromptChainMessage(StoredMessage):
-    message_type: MessageType = MessageType.PROMPT_CHAIN_MESSAGE
-    message_title: StrictStr
-    message_description: StrictStr
+class PromptChainMessage(HistoryMessage):
+    history_message: HistoryMessage
+    message_title: str
+    message_description: str
 
 class PersonaMessage(StoredMessage):
-    message_type: MessageType = MessageType.PERSONA_MESSAGE
+    prompt_chain_message: PromptChainMessage
+    persona_avatar: str
+    
