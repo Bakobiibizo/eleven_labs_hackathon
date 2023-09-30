@@ -32,8 +32,7 @@ class CommandExecutor:
     def execute_command(self, json_command: str):  
         command = json.loads(json_command)
         function = self.command_dispatcher[command["command"]]
-        result = function(command["prompt"])
-        return result
+        return function(command["prompt"])
 
 class ToolHandler(Tool):
     def __init__(self, name: str):  
@@ -73,11 +72,7 @@ class ToolHandler(Tool):
                     }
 
     def json_command(self, name: str, command: str) -> str:  
-        json_command_string = json.dumps({
-            'name': name,
-            'command': command
-        })
-        return json_command_string
+        return json.dumps({'name': name, 'command': command})
 
     def get_info(self, name: str, description: str, command: str) -> dict: 
         info = Info(

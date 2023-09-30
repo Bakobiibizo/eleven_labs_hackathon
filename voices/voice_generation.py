@@ -94,17 +94,15 @@ class VoiceGeneration():
         audio_data = b""
         for chunk in response.iter_content(chunk_size=self.CHUNK_SIZE):
             audio_data += chunk
-    
+
         audio = AudioSegment.from_file(io.BytesIO(audio_data), format="mp3")
-        
+
         with open("output/voice.mp3", "wb") as f:
             f.write(audio_data)
         play("output/voice.mp3")
         byte_string = io.BytesIO()
         audio.export(byte_string, format="mp3")
-        base64_string = base64.b64encode(byte_string.getvalue()).decode("utf-8")
-        
-        return base64_string
+        return base64.b64encode(byte_string.getvalue()).decode("utf-8")
 
     def download_voices(self, json_string):
         """
@@ -131,19 +129,18 @@ class VoiceGeneration():
             use_case = voice['labels'].get('use case')
             accent = voice['labels'].get('accent')
             description = voice.get('description')
-            
+
             name = name.replace(" ", "_")
-            
+
             voice_choice.add(voice=Voices(name=name, voice_id=voice_id, accent=accent, description=description, age=age, gender=gender, use_case=use_case))
-                       
+
             response = requests.get(url)
             if response.status_code != 200:
                 continue
-            if response.status_code == 200:
-                filename = f'voice/voice_samples/{name}_{voice_id}.mp3'
+            filename = f'voice/voice_samples/{name}_{voice_id}.mp3'
 
-                with open(filename, 'wb') as f:
-                    f.write(response.content)
+            with open(filename, 'wb') as f:
+                f.write(response.content)
 
 if __name__ == "__main__":
    voice = VoiceGeneration()

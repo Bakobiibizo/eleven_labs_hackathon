@@ -20,8 +20,7 @@ class Messages:
             "content": f"{content}"
             }
         self.context_window.add_message(message=messages)
-        messages = self.context_window.get_context()
-        return messages
+        return self.context_window.get_context()
     
     def start_context(self):
         self.context_window.start_context()

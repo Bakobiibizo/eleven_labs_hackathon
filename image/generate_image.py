@@ -81,9 +81,7 @@ class GenerateImage:
             image_data = f.read()
         # Encode the binary data to base64
         encoded_image_data = base64.b64encode(image_data)
-        # Convert the base64 bytes to string
-        serialized_image = encoded_image_data.decode('utf-8')
-        return serialized_image
+        return encoded_image_data.decode('utf-8')
 
     def set_style(self, style=None):
         if not style:

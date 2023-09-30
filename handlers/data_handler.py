@@ -13,14 +13,14 @@ class DataHandler:
         role = role
         if not role:
             role = "user"
-        if not role in ["user", "assistant", "system"]:
+        if role not in {"user", "assistant", "system"}:
             role = "user"
         if not content:
             raise HTTPException(
                 status_code=400, 
                 detail="Content is required. Content is a string of text meant to be sent to the chat bot api."
                 )
-        
+
         assistant_message = self.text.send_chat_complete(messages=messages).choices[0].message
         return assistant_message.content
 
@@ -29,7 +29,7 @@ class DataHandler:
         role = role
         if not role:
             role = "user"
-        if not role in ["user", "assistant", "system"]:
+        if role not in {"user", "assistant", "system"}:
             role = "user"
         if not content:
             raise HTTPException(

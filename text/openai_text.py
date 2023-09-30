@@ -19,11 +19,10 @@ class OpenAITextGeneration:
         messages = self.messages.create_message(role=role, content=messages)
         try:
             print(messages)
-            response = self.chat.create(
+            return self.chat.create(
                 model=model,
                 messages=messages,
             )
-            return response
         except ConnectionError as e:
             print(f"There was an error connecting to OpenAI: {e}")
             raise
